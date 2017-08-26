@@ -31,13 +31,13 @@ def json_converter(sourcefile, targetdir):
     # Select the other relevant columns
     cleaned_articles_df = articles_df[["Title", "PublishedDate", "Body"]].copy()
 
-    # Concatenate the relevant columns with the noramlised sources columns
+    # Concatenate the relevant columns with the normalised sources columns
     full_articles_df = pd.concat([cleaned_articles_df, new_sources_df], axis = 1)
 
     # Drop rows containing NaNs
     full_articles_nn = full_articles_df.dropna(how="any")
 
-    # Convert each row of the CPR pandas dataframe to json format
+    # Convert each row of the pandas dataframe to json format
     # and save as an individual json files in data/test_jsons
 
     filenumber = 0

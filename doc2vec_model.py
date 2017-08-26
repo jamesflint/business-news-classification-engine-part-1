@@ -2,18 +2,9 @@ import json
 import time
 import os
 import glob
-from os import listdir
-from os.path import isfile, join
-import collections
-import smart_open
-import random
-
-import numpy as np
 import gensim
-from gensim import corpora, models
 import pandas as pd
 
-import clean_text
 
 def read_corpus(fname, tokens_only=False):
     with open(fname) as f:
