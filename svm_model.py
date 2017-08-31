@@ -4,7 +4,7 @@ import sklearn.datasets
 
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn import svm, grid_search
+from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import SGDClassifier
 from sklearn.naive_bayes import MultinomialNB
@@ -16,7 +16,7 @@ def define_dataset(sourcedir):
     """Import the content data and define as a scikit learn dataset
     then Split the data for cross-validation purposes"""
 
-    databunch = sklearn.datasets.load_files((open("./data/" + sourcedir))
+    databunch = sklearn.datasets.load_files((open("./data/" + sourcedir)),
                                             description = None,
                                             categories = None,
                                             load_content = True,
@@ -105,10 +105,9 @@ def fit_svm_rbf_plus(xtrain, ytrain):
     return clf
 
 
-
-def svc_param_selection(X, y, nfolds):
+def svc_param_selection(Xtrain, ytrain, nfolds):
     """Conduct a grid search of the available options to find the
-    best parameters. Note that this took 24 hour on my aging
+    best parameters. Note that this took over 100 hours on my aging
     2009 dual core MacBook!"""
 
     Cs = [0.001, 0.01, 0.1, 1, 10]
@@ -116,7 +115,7 @@ def svc_param_selection(X, y, nfolds):
     kernels = ['linear', 'poly', 'rbf']
     param_grid = {'C': Cs, 'gamma' : gammas, 'kernel': kernels}
     grid_search = GridSearchCV(svm.SVC(), param_grid, cv=nfolds)
-    grid_search.fit(X, y)
+    grid_search.fit(Xtrain, ytrain)
     print(grid_search.best_params_)
 
     return
@@ -126,8 +125,8 @@ def fit_svm_best_params(xtrain, ytrain):
     """Fit the data using the parameters we had returned by our
     grid search"""
 
-    clf = SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-              decision_function_shape=None, degree=5, gamma='auto', kernel='rbf',
+    clf = SVC(C=10, cache_size=200, class_weight=None, coef0=0.0,
+              decision_function_shape=None, degree=5, gamma=0.01, kernel='rbf',
               max_iter=-1, probability=False, random_state=None, shrinking=True,
               tol=0.001, verbose=False).fit(xtrain, ytrain)
 

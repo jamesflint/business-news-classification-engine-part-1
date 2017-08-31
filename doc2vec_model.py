@@ -6,6 +6,37 @@ import gensim
 import pandas as pd
 
 
+
+def create_doc2vec_corpus(sourcedir):
+
+    start_time = time.time()
+
+    texts = []
+
+    # use glob library to open the json files in dir one by one
+    # pull out the article body content and add it to the documents list
+    for file in glob.iglob(os.path.join("./data/", sourcedir, "*.json")):
+        with open(file) as f:
+            json_article = pd.read_json(f, typ="series")
+            content = json_article["content"]
+            # NB: tried preprocessing using clean.text (next line), but gensim
+            # preprocess in read_corpus function was more effective
+            # text = clean_text.clean_text(content)
+
+            # Add the article to the list of all articles
+            texts.append(content)
+            # filenumber += 1
+
+    # save the list as the doc2vec corpus
+    with open((os.path.join("./data/", sourcedir, "_doc2vec_corpus.cor")), "w") as f:
+        json.dump(texts, f, ensure_ascii=False)
+
+    print("Created doc2vec corpus, took {}".format(time.time() - start_time))
+    print("\n")
+
+    return
+
+
 def read_corpus(fname, tokens_only=False):
     with open(fname) as f:
         json_article = pd.read_json(f, typ='series')
@@ -48,36 +79,6 @@ def doc2vec_test_corpus(sourcedir):
     print("\n")
 
     return test_corpus
-
-
-def create_doc2vec_corpus(sourcedir):
-
-    start_time = time.time()
-
-    texts = []
-
-    # use glob library to open the json files in dir one by one
-    # pull out the article body content and add it to the documents list
-    for file in glob.iglob(os.path.join("./data/", sourcedir, "*.json")):
-        with open(file) as f:
-            json_article = pd.read_json(f, typ="series")
-            content = json_article["content"]
-            # NB: tried preprocessing using clean.text (next line), but gensim
-            # preprocess in read_corpus function was more effective
-            # text = clean_text.clean_text(content)
-
-            # Add the article to the list of all articles
-            texts.append(content)
-            # filenumber += 1
-
-    # save the list as the doc2vec corpus
-    with open((os.path.join("./data/", sourcedir, "_doc2vec_corpus.cor")), "w") as f:
-        json.dump(texts, f, ensure_ascii=False)
-
-    print("Created doc2vec corpus, took {}".format(time.time() - start_time))
-    print("\n")
-
-    return
 
 
 def train_doc2vec_model(train_corpus):
