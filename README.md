@@ -21,7 +21,7 @@ Curation has provided a clean, human-curated database of 43,502 summarised news 
 
 * A 27-page project report in Microsoft Word* Executable Python code for the various modules of the project* A Jupyter notebook demonstrating implementation of the codebase* A client presentation in Microsoft Powerpoint
 
-## LIcense
+## License
 
 This work is licensed under a [Creative Commons Attribution 3.0 Unported License.](http://creativecommons.org/licenses/by/3.0/)
 
